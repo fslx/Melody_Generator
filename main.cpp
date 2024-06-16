@@ -4,13 +4,29 @@
 #include <ctime>
 #include <cstdlib>
 
-const std::vector<std::string> major_scale = {"C", "D", "E", "F", "G", "A", "B"};
-const std::vector<std::string> minor_scale = {"A", "B", "C", "D", "E", "F", "G"};
+const std::vector<std::string> note_template = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
+const std::vector<int> major_intervals = {2,2,1,2,2,2,1};
+const std::vector<int> minor_intervals = {2,1,2,2,2,1,2,2};
 const std::vector<std::string> rythm_patterns = {"quarter", "half", "whole"};
 
 std::string getRandomElement(const std::vector<std::string> &vec) {
 	return vec[rand() % vec.size()];
 }
+
+
+std::vector<std::string> generateScale(const std::string? root, const std::vector<int>& intervals) {
+	std::vector<std::string> scale;
+	int start = std::find(note_template.begin(), note_template.end(), root) - note_template.begin();
+	scale.push_back(note_template[start]);
+	for(int interval : intervals) {
+		scale = (start + interval) % note_template.size();
+		scale.push_back(note_template[start]);
+	}
+
+	return scale;
+}
+
+
 
 void generateMelody(const std::vector<std::string& vec) {
 	std::vector<std::pair<std::string, std::string>> melody;
@@ -29,17 +45,32 @@ void generateMelody(const std::vector<std::string& vec) {
 int main() {
 
 	srand(static_cast<unsigned int>(time(0)));
-	std::string input;
+	std::string key, root;
 	std::cout << "Enter the key (Major or minor): ";
-	std::cin >> input;
+	std::cin >> key;
 
-	if(input == "major" || input == "major") {
-		generateMelody(major_scale, 8); // eight notes melody generated!
-	} else if(input == "minor" || input == "Minor") {
- 		generateMelody(minor_scale, 8);
-	} else {
-		std::cout << "Invalid input!" << std::endl;
+	std::cout << "Enter a root note (C,C#,D,D#..):" ;
+	std::cin >> root;
+
+
+	if(std::find(note_template.begin(), note_template.end(), root) == note_template.end()) {
+		std::cout << "Invalid root note!" << std::endl;
+		return 1;
 	}
+
+	std::vector<std::string> scale;
+	if(key == "Major" || key == "major") {
+		scale = generateScale(root, major_intervals);
+	}
+	else if(key == "Minor" || key == "minor") {
+		scale = generateScale(root, minor_intervals);
+	}
+	else {
+		std::cout << "Invalid key selected!" << std::endl;
+		return 1;
+	}
+
+	generateMelody(scale, 8);
 
 	return 0;
 }
