@@ -7,14 +7,13 @@
 
 const std::vector<std::string> note_template = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
 const std::vector<int> major_intervals = {2, 2, 1, 2, 2, 2, 1};
-const std::vector<int> minor_intervals = {2, 1, 2, 2, 1, 2, 2}; // Korrigert lengden
+const std::vector<int> minor_intervals = {2, 1, 2, 2, 1, 2, 2}; 
 const std::vector<std::string> rythm_patterns = {"quarter", "half", "whole"};
 
 std::string getRandomElement(const std::vector<std::string> &vec) {
     return vec[rand() % vec.size()];
 }
 
-// Generate a new scale based on a root-note
 std::vector<std::string> generateScale(const std::string &root, const std::vector<int> &intervals) {
     std::vector<std::string> scale;
     int start = std::find(note_template.begin(), note_template.end(), root) - note_template.begin();
@@ -27,7 +26,7 @@ std::vector<std::string> generateScale(const std::string &root, const std::vecto
 }
 
 // return a new melody based on a scale chosen from the generateScale() method
-void generateMelody(const std::vector<std::string> &scale, int length) { // Korrigert parameter-type
+void generateMelody(const std::vector<std::string> &scale, int length) { 
     std::vector<std::pair<std::string, std::string>> melody;
     for (int i = 0; i < length; i++) {
         std::string note = getRandomElement(scale);
@@ -43,7 +42,7 @@ void generateMelody(const std::vector<std::string> &scale, int length) { // Korr
 
 // Main function
 int main() {
-    srand(static_cast<unsigned int>(time(0))); // Initier random seed
+    srand(static_cast<unsigned int>(time(0))); 
     std::string key, root;
     std::cout << "Enter the key (Major or minor): ";
     std::cin >> key;
